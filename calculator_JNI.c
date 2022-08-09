@@ -1,5 +1,5 @@
 #include <jni.h>  // JAVA_HOME/include
-#include "calculator_JNI.h"
+#include "include/calculator_JNI.h"
 
 JNIEXPORT jdouble JNICALL Java_calculator_1JNI_sum
   (JNIEnv * ptr_jnie, jobject jobj, jdouble a1, jdouble a2)

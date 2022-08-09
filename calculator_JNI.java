@@ -1,4 +1,5 @@
-import java.io.*;
+import java.io.*; //Console
+import calcm_jni.*;
 
 public class calculator_JNI {
   static {
@@ -15,7 +16,11 @@ public class calculator_JNI {
 
   
   public static void main(String argsp[]){
+    
     calculator_JNI calc = new calculator_JNI();
+    //System.loadLibrary("calcm");
+    calcm_JNI calcm = new calcm_JNI();
+
     boolean endCalculator = false;
     String op = "";
     String s_arg1 = "";
@@ -29,6 +34,8 @@ public class calculator_JNI {
       System.out.println("console not available");
       return;
     }
+
+    calcm.info();
 
     do {          
       System.out.println("\n\nenter operator (+,-,*,/ , %(modulo))   x->end:");
@@ -85,7 +92,8 @@ public class calculator_JNI {
             Double.toString(calculationResult) + (
             (op.equals("%")) 
               ? (", rest: " + Integer.toString(restPart)) 
-              : ""));      
+              : ""));  
+          break;    
         } 
         default :{
           System.out.println("Not supported operator.");      
