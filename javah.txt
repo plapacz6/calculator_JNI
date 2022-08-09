@@ -1,0 +1,4 @@
+#since jdk 9 javah is deprecated
+#use option -h instead followed by directory for output c header file
+#
+/usr/lib/jvm/jdk-18/bin/javac classFile.java -h .
