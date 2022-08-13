@@ -7,6 +7,7 @@ public class mgui { // extends JFrame {
   public String mtx1;  // public as this is a somewhat forced example of using JNI for this purpose
   public String mtx2;
   public String mtxR;
+  
   private javax.swing.text.PlainDocument doc_mtx1;
   private javax.swing.text.PlainDocument doc_mtx2;
   private javax.swing.text.PlainDocument doc_mtxR;
