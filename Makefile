@@ -34,6 +34,7 @@ libcalcm.so: calcm_JNI.cc ./include/calcm_jni_calcm_JNI.h
 	$(JAVA_HOME)/bin/javac ./mgui/mgui.java -h ./include
 
 
+
 mgui: ./mgui/mgui.class
 	$(JAVA_HOME)/bin/java -Djava.library.path="." mgui.mgui
 
