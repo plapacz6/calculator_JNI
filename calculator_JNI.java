@@ -1,5 +1,6 @@
 import java.io.*; //Console
-import calcm_jni.*;
+//import calcm_jni.*;
+import mgui.*;
 
 public class calculator_JNI {
   static {
@@ -19,7 +20,7 @@ public class calculator_JNI {
     
     calculator_JNI calc = new calculator_JNI();
     //System.loadLibrary("calcm");
-    calcm_JNI calcm = new calcm_JNI();
+    //calcm_JNI calcm = new calcm_JNI();
 
     boolean endCalculator = false;
     String op = "";
@@ -35,14 +36,19 @@ public class calculator_JNI {
       return;
     }
 
-    calcm.info();
+    //calcm.info();
 
     do {          
-      System.out.println("\n\nenter operator (+,-,*,/ , %(modulo))   x->end:");
+      System.out.println("\n\nenter operator (+,-,*,/ , %(modulo), m(matrix calc))   x->end:");
       op = console.readLine(); 
       switch(op){
         case "x":{
           endCalculator = true;
+          break;
+        }
+        case "m":{
+          mgui mgui_obj = new mgui();
+          mgui_obj.show();            
           break;
         }
         case "+":
