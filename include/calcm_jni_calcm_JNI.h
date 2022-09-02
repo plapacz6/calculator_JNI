@@ -17,18 +17,18 @@ JNIEXPORT void JNICALL Java_calcm_1jni_calcm_1JNI_info
 
 /*
  * Class:     calcm_jni_calcm_JNI
- * Method:    mtx_dot
- * Signature: (Lmgui/mgui;)V
- */
-JNIEXPORT void JNICALL Java_calcm_1jni_calcm_1JNI_mtx_1dot
-  (JNIEnv *, jobject, jobject);
-
-/*
- * Class:     calcm_jni_calcm_JNI
  * Method:    mtx_mul
  * Signature: (Lmgui/mgui;)V
  */
 JNIEXPORT void JNICALL Java_calcm_1jni_calcm_1JNI_mtx_1mul
+  (JNIEnv *, jobject, jobject);
+
+/*
+ * Class:     calcm_jni_calcm_JNI
+ * Method:    mtx_add
+ * Signature: (Lmgui/mgui;)V
+ */
+JNIEXPORT void JNICALL Java_calcm_1jni_calcm_1JNI_mtx_1add
   (JNIEnv *, jobject, jobject);
 
 #ifdef __cplusplus

@@ -16,6 +16,7 @@ vector <vector <double> >& str2vvd_v2( string mtx, vector< vector<double> >& vvd
 vector <vector <double> >& str2vvd_v1( string mtx, vector< vector<double> >& vvd);
 string vvd2str(string& mtx, vector<vector<double> >& vvd);
 vector<vector<double> > &matrix_mul(vector<vector<double> >& vvd1, vector<vector<double> >& vvd2, vector<vector<double> >& vvdR);
+vector<vector<double> > &matrix_add(vector<vector<double> >& vvd1, vector<vector<double> >& vvd2, vector<vector<double> >& vvdR);
 string to_string_f(double &val, int f);
 #define PDEBUG(X)  cout << #X << ":\n" <<  X << endl << "----------\n";
 
@@ -26,13 +27,15 @@ JNIEXPORT void JNICALL Java_calcm_1jni_calcm_1JNI_info
 }
 
 const int c_str_mtx_size = 1024;
+  
 /*
  * Class:     calcm_jni_calcm_JNI
- * Method:    mtx_dot
+ * Method:    mtx_mul
  * Signature: (Lmgui/mgui;)V
  */
-JNIEXPORT void JNICALL Java_calcm_1jni_calcm_1JNI_mtx_1dot
-  (JNIEnv * env, jobject calcm_obj, jobject gmui_obj){    
+JNIEXPORT void JNICALL Java_calcm_1jni_calcm_1JNI_mtx_1mul
+  (JNIEnv * env, jobject calcm_obj, jobject gmui_obj)
+  {    
     const char* c_str_mtx1 = NULL;
     const char* c_str_mtx2 = NULL;
     const char* c_str_mtxR = NULL;
@@ -73,13 +76,16 @@ JNIEXPORT void JNICALL Java_calcm_1jni_calcm_1JNI_mtx_1dot
     env->ReleaseStringUTFChars(jstring_mtx2, c_str_mtx2);    
   }
 
+
+  
 /*
  * Class:     calcm_jni_calcm_JNI
- * Method:    mtx_mul
+ * Method:    mtx_add
  * Signature: (Lmgui/mgui;)V
  */
-JNIEXPORT void JNICALL Java_calcm_1jni_calcm_1JNI_mtx_1mul
-  (JNIEnv * env, jobject calcm_obj, jobject gmui_obj){
+JNIEXPORT void JNICALL Java_calcm_1jni_calcm_1JNI_mtx_1add
+  (JNIEnv * env, jobject calcm_obj, jobject gmui_obj)
+  {
     const char* c_str_mtx1 = NULL;
     const char* c_str_mtx2 = NULL;    
 
@@ -101,7 +107,12 @@ JNIEXPORT void JNICALL Java_calcm_1jni_calcm_1JNI_mtx_1mul
 
 
     //math operations
-    string_mtxR = string_mtx1 + "\n ADD(.) \n" + string_mtx2;
+    //string_mtxR = string_mtx1 + "\n ADD(.) \n" + string_mtx2;
+    vector< vector<double> > vvd1, vvd2, vvdR;
+    vvd1 = str2vvd_v2(string_mtx1, vvd1);
+    vvd2 = str2vvd_v2(string_mtx2, vvd2);
+    vvdR = matrix_add(vvd1, vvd2, vvdR);
+    string_mtxR = vvd2str(string_mtxR, vvdR);
 
 
     jfieldID mtxR_id = env->GetFieldID(gmui_class, "mtxR", "Ljava/lang/String;");
@@ -361,8 +372,10 @@ int main(){
   vvd.clear();    
   mtxX.clear();  
   
+  cout << "***************************" << endl;
+  cout << "matrix multiplication tests" << endl;
   #define TESTS_NUMBER_2 (4)
-  struct {
+  struct strings_pair_t {
     string a;
     string b;
   } 
@@ -385,12 +398,33 @@ int main(){
     cout << endl;
     vvd.clear();
   }
+  cout << "***************************" << endl;
+  cout << "matrix addtiion tests" << endl;
+  strings_pair_t mtx_pair2[TESTS_NUMBER_2] = {
+    {"1 2 3\n4 5 6", "1 1 1\n1 1 1"},    
+    {"1 2\n 3 4\n 5 6", "1 1\n 1 1\n 1 1"},    
+    {"1 2 3\n4 5 6\n", "1 1\n1 1\n1 1\n"},    
+    {"1 2\n 3 4\n 5 6\n", "1 1 1\n 1 1 1\n"},    
+  };
+  for(int i = 0; i < TESTS_NUMBER_2; i++){
+    str2vvd_v2(mtx_pair2[i].a, vvd1);
+    str2vvd_v2(mtx_pair2[i].b, vvd2);
+    print_vvd(vvd1);
+    cout << endl;
+    print_vvd(vvd2);
+    cout << endl;
+    vvd = matrix_add(vvd1, vvd2, vvd);
+    cout << endl;
+    print_vvd(vvd, 1);
+    cout << endl;
+    vvd.clear();
+  }
+
 }
 #endif // TEST_CALCM_JNI
 //---------------------------------------------------
 
 //---------------------------------------------------
-/* TODO - MOCK*/
 vector<vector<double> > &matrix_mul(vector<vector<double> >& vvd1, vector<vector<double> >& vvd2, vector<vector<double> >& vvdR){  
   cout << "matrix1 rows: " << vvd1.size() << ", matrix2 cols: " << vvd2[0].size() << endl;
   if(vvd2.size() == 0) {
@@ -437,15 +471,53 @@ vector<vector<double> > &matrix_mul(vector<vector<double> >& vvd1, vector<vector
   for(int i = 0; i < vvd1.size(); i++){
     vvdR[i].resize(vvd2[0].size()); //cols mtx2
     cout << "cols in row " << i << " size changed: " << vvdR[i].size() << endl;
-    for(int j = 0; j < vvd2[0].size(); j++){
+    for(int j = 0; j < vvd2[0].size(); j++){ //vvd1[0].size() : [0] because some matrix 2 have less rows than matrix 1 (matrix Result)
       val = 0;      
-      assert(vvd2.size() == vvd1[0].size()); //vvd1[0].size() : [0] because some matrix 2 have less rows than matrix 1 (matrix Result)
+      assert(vvd2.size() == vvd1[0].size()); 
       for(int ii = 0, jj = 0; ii < vvd2.size() && jj < vvd1[i].size(); ii++, jj++){                        
         val += vvd1[i][jj] * vvd2[ii][j];        
         cout << "counting mtxR[" << i << "][" << j << "]:" << val << "->";
       }
       cout << "after summing: val == " << val << endl;
       vvdR[i][j] = val;
+    }
+  }
+  return vvdR;
+}
+//---------------------------------------------------
+
+vector<vector<double> > &matrix_add(vector<vector<double> >& vvd1, vector<vector<double> >& vvd2, vector<vector<double> >& vvdR){  
+  cout << "matrix1 rows: " << vvd1.size() << ", matrix2 cols: " << vvd2[0].size() << endl;
+  if(vvd2.size() == 0) {
+    cout << "not enough columnt in 2 matrix" << endl;
+    return vvdR;
+  }
+  if(vvd1.size() == 0) {
+    cout << "not enough row in 1 matrix" << endl;
+    return vvdR;
+  }
+  if( vvd1.size()  != vvd2.size() ){  
+    cout << "number of rows in 1 matrix not equal number of rows in 2 matrix" << endl;    
+    return vvdR;    
+  }
+  for(int i = 0; i < vvd1.size(); i++){      
+    if(vvd2[i].size() != vvd1[i].size()){
+      cout << "number of cols in row " << i << " 1 matrix not equal number of cols s in 2 matrix" << endl;      
+      return vvdR;    
+    }      
+  }
+
+  /* matrix addition */
+  vvdR.clear();
+  cout << "matrix addition" << endl;
+  double val = 0;
+  vvdR.resize(vvd1.size()); //rows mtx1 (or mtx2)
+  cout << "row size changed: " << vvdR.size() << endl;
+  for(int i = 0; i < vvd1.size(); i++){
+    vvdR[i].resize(vvd2[0].size()); //cols mtx2 (or mtx1) (in addition are equal)
+    cout << "cols in row " << i << " size changed: " << vvdR[i].size() << endl;
+    for(int j = 0; j < vvd2[0].size(); j++){
+      vvdR[i][j] = vvd1[i][j] + vvd2[i][j];
     }
   }
   return vvdR;

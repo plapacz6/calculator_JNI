@@ -22,12 +22,12 @@ public class calcm_JNI {
 
   public native void info();  
 
-  public native void mtx_dot(mgui mgui_obj);
+  public native void mtx_mul(mgui mgui_obj);
   // public void mtx_dot(mgui mgui_obj){
   //   mgui_obj.mtxR = mgui_obj.mtx1 + "\n .(dot) \n" + mgui_obj.mtx2;
   // }
 
-  public native void mtx_mul(mgui mgui_obj);
+  public native void mtx_add(mgui mgui_obj);
   // public void mtx_mul(mgui mgui_obj){
   //   mgui_obj.mtxR = mgui_obj.mtx1 + "\n *(mul) \n" + mgui_obj.mtx2;
   // }

@@ -74,28 +74,28 @@ public class mgui { // extends JFrame {
     JLabel label_mtx2 = new JLabel("matrix 2");
     //form_mgui.getContentPane().add(label_mtx2);
     
-    javax.swing.JButton button_mtx_dot = new javax.swing.JButton();
-    button_mtx_dot.setText("mtx_dot");
-    button_mtx_dot.addActionListener(
+    javax.swing.JButton button_mtx_mul = new javax.swing.JButton();
+    button_mtx_mul.setText("mtx_mul");
+    button_mtx_mul.addActionListener(
       new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evnt){
           fill_mtx();        
           //calcm.set_mtxA_string_content(mtx1, mtx2);  //DEBUG
-          calcm.mtx_dot(myself);  //myself--->this mgui
+          calcm.mtx_mul(myself);  //myself--->this mgui
           //mtxR = calcm.get_mtxR_string_content();  //DEBUG
           fill_mtx();
         }
       }
     );
 
-    javax.swing.JButton button_mtx_mul = new javax.swing.JButton();
-    button_mtx_mul.setText("mtx_mul");
-    button_mtx_mul.addActionListener(
+    javax.swing.JButton button_mtx_add = new javax.swing.JButton();
+    button_mtx_add.setText("mtx_add");
+    button_mtx_add.addActionListener(
       new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evnt){
           fill_mtx();
           //calcm.set_mtxA_string_content(mtx1, mtx2); //DEBUG
-          calcm.mtx_mul(myself);  //myself--->this mgui
+          calcm.mtx_add(myself);  //myself--->this mgui
           //mtxR = calcm.get_mtxR_string_content(); //DEBUG      
           //text_mtx2.setText(text_mtx1.getText()); //DEBUG   
           fill_mtx();         
@@ -135,8 +135,8 @@ public class mgui { // extends JFrame {
       )
       .addGroup(
         glayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)        
-        .addComponent(button_mtx_dot)        
-        .addComponent(button_mtx_mul)
+        .addComponent(button_mtx_mul)        
+        .addComponent(button_mtx_add)
       )      
       .addGroup(
         glayout.createParallelGroup()        
@@ -173,8 +173,8 @@ public class mgui { // extends JFrame {
         )
         .addGroup(
           glayout.createSequentialGroup()
-          .addComponent(button_mtx_dot)
-          .addComponent(button_mtx_mul)        
+          .addComponent(button_mtx_mul)
+          .addComponent(button_mtx_add)        
         )
         .addComponent(text_mtxR,
           javax.swing.GroupLayout.PREFERRED_SIZE,
