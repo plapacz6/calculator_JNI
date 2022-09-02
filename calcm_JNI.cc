@@ -435,13 +435,13 @@ vector<vector<double> > &matrix_mul(vector<vector<double> >& vvd1, vector<vector
     cout << "not enough row in 1 matrix" << endl;
     return vvdR;
   }
-  if( vvd1.size()  != vvd2[0].size() ){  
-    cout << "number of rows in 1 matrix not equal number of columns in 2 matrix" << endl;    
+  if( vvd1[0].size()  != vvd2.size() ){  
+    cout << "number of cols in 1 matrix not equal number of rows in 2 matrix" << endl;    
     return vvdR;    
   }
-  for(int i = 0; i < vvd1[0].size(); i++){      
-    if(vvd2[i].size() != vvd1.size()){
-      cout << "number of row " << i << " 1 matrix not equal number of columns in 2 matrix" << endl;      
+  for(int i = 0; i < vvd1.size(); i++){      
+    if(vvd1[i].size() != vvd2.size()){
+      cout << "number of cols " << i << " 1 matrix not equal number of rows in 2 matrix" << endl;      
       return vvdR;    
     }      
   }
