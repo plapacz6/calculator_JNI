@@ -37,8 +37,10 @@ public class mgui { // extends JFrame {
     calcm = new calcm_JNI();
 
 //DEBUG
-    text_mtx1.setText("1 2 3\n4 5 6\n7 8 9");
-    text_mtx2.setText("1 0 0\n0 1 0\n0 0 1");    
+    // text_mtx1.setText("1 2 3\n4 5 6\n7 8 9");
+    // text_mtx2.setText("1 0 0\n0 1 0\n0 0 1");    
+    text_mtx1.setText("1 2 \n4 5 \n8 9");
+    text_mtx2.setText("1 0 0\n0 1 0");    
     mtxR = "result == empty";
 //DEBUG
     
@@ -81,6 +83,7 @@ public class mgui { // extends JFrame {
           //calcm.set_mtxA_string_content(mtx1, mtx2);  //DEBUG
           calcm.mtx_dot(myself);  //myself--->this mgui
           //mtxR = calcm.get_mtxR_string_content();  //DEBUG
+          fill_mtx();
         }
       }
     );
@@ -94,7 +97,8 @@ public class mgui { // extends JFrame {
           //calcm.set_mtxA_string_content(mtx1, mtx2); //DEBUG
           calcm.mtx_mul(myself);  //myself--->this mgui
           //mtxR = calcm.get_mtxR_string_content(); //DEBUG      
-          //text_mtx2.setText(text_mtx1.getText()); //DEBUG          
+          //text_mtx2.setText(text_mtx1.getText()); //DEBUG   
+          fill_mtx();         
         }
       }
     );
@@ -185,12 +189,14 @@ public class mgui { // extends JFrame {
     form_mgui.setVisible(true);
   }
 
-  // public static void main(String[] args){
-  //   javax.swing.SwingUtilities.invokeLater(new Runnable() {
-  //     public void run() {
-  //       mgui mgui_obj = new mgui();
-  //       mgui_obj.show();       
-  //     }
-  //   });
-  // }
+  
+  public static void main(String[] args){
+    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+      public void run() {
+        mgui mgui_obj = new mgui();
+        mgui_obj.show();       
+      }
+    });
+  }
+  
 }

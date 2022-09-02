@@ -38,6 +38,8 @@ libcalcm.so: calcm_JNI.cc ./include/calcm_jni_calcm_JNI.h
 mgui: ./mgui/mgui.class
 	$(JAVA_HOME)/bin/java -Djava.library.path="." mgui.mgui
 
+calcm: calcm_JNI.cc ./include/calcm_jni_calcm_JNI.h
+	g++ -o calcm calcm_JNI.cc -DTEST_CALCM_JNI -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/linux"
 
 
 .PHONY: clean
@@ -53,6 +55,7 @@ FILE_TO_DELETE=\
 	libcalcm.so \
 	\
 	./mgui/mgui.class \
+	calcm \
 
 
 clean:	
